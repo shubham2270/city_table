@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import ClipLoader from "react-spinners/ClipLoader";
-import styles from './styles.module.css';
-
-
+import styles from "./styles.module.css";
 
 const SearchTable = ({ searchQuery }) => {
   const [loading, setLoading] = useState(false);
@@ -13,37 +12,42 @@ const SearchTable = ({ searchQuery }) => {
 
   const maxPageSize = 10; // Maximum cities per page
 
-  // Simulated API call to fetch paginated places data
   useEffect(() => {
     if (searchQuery === "") {
       return; // Skip fetching if search query is empty
     }
 
     setLoading(true);
-    setTimeout(() => {
-      // Example response, should come from API
-      const allResults = [
-        { placeName: "Paris", country: "France", countryID: "FR" },
-        { placeName: "Tokyo", country: "Japan", countryID: "JP" },
-        { placeName: "New York", country: "United States", countryID: "US" },
-        { placeName: "Berlin", country: "Germany", countryID: "DE" },
-        { placeName: "Sydney", country: "Australia", countryID: "AU" },
-        { placeName: "Toronto", country: "Canada", countryID: "CA" },
-        { placeName: "Rio de Janeiro", country: "Brazil", countryID: "BR" },
-        { placeName: "Moscow", country: "Russia", countryID: "RU" },
-        { placeName: "Rome", country: "Italy", countryID: "IT" },
-        { placeName: "Beijing", country: "China", countryID: "CN" },
-      ];
 
-      const filteredResults = allResults.slice(
-        (currentPage - 1) * pageSize,
-        currentPage * pageSize
-      );
+    const fetchPlaces = async () => {
+      const options = {
+        method: "GET",
+        url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
+        params: { limit: pageSize },
+        headers: {
+          "x-rapidapi-key": process.env.REACT_APP_API_KEY,
+          "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+        },
+      };
 
-      setResults(filteredResults);
-      setTotalResults(allResults.length);
-      setLoading(false);
-    }, 2000); // Simulate a 2 second fetch time
+      try {
+        const response = await axios.request(options);
+        const allResults = response?.data?.data || [];
+        const filteredResults = allResults.slice(
+          (currentPage - 1) * pageSize,
+          currentPage * pageSize
+        );
+
+        setResults(filteredResults);
+        setTotalResults(allResults.length);
+        setLoading(false);
+        console.log(response.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPlaces();
   }, [searchQuery, currentPage, pageSize]);
 
   const totalPages = Math.ceil(totalResults / pageSize);
@@ -53,17 +57,19 @@ const SearchTable = ({ searchQuery }) => {
   };
 
   const handlePageSizeChange = (e) => {
-    const value = Math.min(maxPageSize, Math.max(1, e.target.value)); // Enforce the limit
-    setPageSize(parseInt(value));
-    setCurrentPage(1); // Reset to first page after page size change
+    const inputVal = e.target.value;
+    console.log(inputVal === "", ",,,");
+    if (inputVal !== "") {
+      const value = Math.min(maxPageSize, Math.max(1, e.target.value)); // Enforce the limit
+      setPageSize(parseInt(value));
+      setCurrentPage(1); // Reset to first page after page size change
+    }
   };
 
   return (
     <div className={styles["table-container"]}>
       {/* Spinner while loading */}
       {loading && <ClipLoader size={50} color={"#7952b3"} loading={loading} />}
-
-    
 
       <table>
         <thead>
@@ -86,10 +92,10 @@ const SearchTable = ({ searchQuery }) => {
             results.map((result, index) => (
               <tr key={index}>
                 <td>{(currentPage - 1) * pageSize + index + 1}</td>
-                <td>{result.placeName}</td>
+                <td>{result.city}</td>
                 <td>
                   <img
-                    src={`https://flagsapi.com/${result.countryID}/flat/32.png`}
+                    src={`https://flagsapi.com/${result.countryCode}/flat/32.png`}
                     alt={result.country}
                     style={{ marginRight: "8px" }}
                   />
@@ -102,7 +108,7 @@ const SearchTable = ({ searchQuery }) => {
       </table>
 
       {/* Pagination */}
-      <div className={styles['footer-wrapper']}>
+      <div className={styles["footer-wrapper"]}>
         {totalResults > 0 && (
           <div className={styles["pagination"]}>
             {Array.from({ length: totalPages }, (_, index) => (
@@ -117,24 +123,22 @@ const SearchTable = ({ searchQuery }) => {
               </button>
             ))}
           </div>
-            )}
-          <div className={styles["controls"]}>
+        )}
+        <div className={styles["controls"]}>
           <label>
-            Cities per page: 
+            Cities per page:
             <input
               type="number"
               value={pageSize}
-              min="1"
+              min="0"
               max={maxPageSize}
               onChange={handlePageSizeChange}
             />
           </label>
-      </div>
+        </div>
       </div>
     </div>
   );
 };
-
-
 
 export default SearchTable;

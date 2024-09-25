@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "./styles.module.css"
-
+import styles from "./styles.module.css";
 
 const SearchBox = () => {
   const [isFocused, setIsFocused] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false); 
+  const [isDisabled, setIsDisabled] = useState(false);
   const inputRef = useRef(null); // Reference to input field
-    
-     // Handle keyboard shortcut for Ctrl + /
+
+  // Handle keyboard shortcut for Ctrl + /
   useEffect(() => {
     const handleKeyDown = (event) => {
-        if (event.ctrlKey && event.key === "/") {
+      if (event.ctrlKey && event.key === "/") {
         event.preventDefault();
         inputRef?.current?.focus(); // Focus on input field
       }
