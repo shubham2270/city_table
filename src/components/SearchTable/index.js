@@ -42,6 +42,7 @@ const SearchTable = ({ searchQuery }) => {
         setTotalResults(allResults.length);
         setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error(error);
       }
     };

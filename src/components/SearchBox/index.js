@@ -29,7 +29,7 @@ const SearchBox = ({ setSearchQuery }) => {
         onChange={(e) => setSearchQuery(e.target.value)}
         type="text"
         disabled={isDisabled}
-        placeholder="Search..."
+        placeholder="Search by place name..."
         className={styles["search-box-input"]}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
