@@ -23,7 +23,7 @@ const SearchTable = ({ searchQuery }) => {
       const options = {
         method: "GET",
         url: "https://wft-geo-db.p.rapidapi.com/v1/geo/cities",
-        params: { limit: pageSize },
+        params: { limit: pageSize, namePrefix: searchQuery },
         headers: {
           "x-rapidapi-key": process.env.REACT_APP_API_KEY,
           "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
@@ -41,7 +41,6 @@ const SearchTable = ({ searchQuery }) => {
         setResults(filteredResults);
         setTotalResults(allResults.length);
         setLoading(false);
-        console.log(response.data.data);
       } catch (error) {
         console.error(error);
       }
@@ -58,7 +57,6 @@ const SearchTable = ({ searchQuery }) => {
 
   const handlePageSizeChange = (e) => {
     const inputVal = e.target.value;
-    console.log(inputVal === "", ",,,");
     if (inputVal !== "") {
       const value = Math.min(maxPageSize, Math.max(1, e.target.value)); // Enforce the limit
       setPageSize(parseInt(value));
