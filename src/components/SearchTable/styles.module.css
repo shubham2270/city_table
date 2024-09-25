@@ -1,0 +1,124 @@
+.table-container {
+    margin-top: 20px;
+    text-align: center;
+    position: relative;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    padding: 8px;
+    border: 1px solid rgb(222, 226, 230);
+    text-align: left;
+}
+
+th {
+    font-weight: 700;
+}
+
+img {
+    vertical-align: middle;
+}
+
+tbody td {
+    text-align: left;
+}
+
+tbody td[colspan="3"] {
+    text-align: center;
+    font-style: italic;
+}
+
+/* Controls for page size input */
+.controls {
+    padding-left: 16px;
+}
+
+
+
+.controls input {
+    width: 50px;
+    margin-left: 8px;
+    padding: 4px;
+}
+
+.footer-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Pagination styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination-button {
+    background-color: white;
+    border: 1px solid rgb(222, 226, 230);
+    padding: 8px 12px;
+    margin: 0 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination-button.active {
+    background-color: #7952b3;
+    color: white;
+}
+
+.pagination-button:hover {
+    background-color: #ddd;
+}
+
+label {
+    font-size: 16px;
+}
+
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+    .pagination-button {
+        padding: 6px 10px;
+        margin: 2px;
+        font-size: 12px;
+    }
+
+    th,
+    td {
+        padding: 6px;
+        font-size: 14px;
+    }
+
+    .controls input {
+        width: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pagination-button {
+        margin: 4px 0;
+    }
+
+    table {
+        font-size: 12px;
+    }
+         label {
+             font-size: 10px;
+    
+         }
+}
+
+
