@@ -1,6 +1,5 @@
 # after cloning the repo
 
-## cd city_table
-
-npm i
-npm start
+`cd city_table`<br>
+`npm i`<br>
+`npm start`
